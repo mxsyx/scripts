@@ -19,11 +19,11 @@ void Stream::set_download_duration(double download_duration) {
   download_duration_ = download_duration;
 }
 
-void Stream::set_isdownload(bool isdownload){
+void Stream::set_isdownload(bool isdownload) {
   isdownload_ = isdownload;
 }
 
-bool Stream::isdownload(){
+bool Stream::isdownload() {
   return isdownload_;
 }
 
@@ -32,11 +32,15 @@ double Stream::download_duration() {
 }
 
 
-
 // StreamInf 类方法定义
 StreamInf::StreamInf(string url) {
   url_ = url;
 }
+
+StreamInf::set_info(string parameter, string value){
+  info_[parameter] = value;
+}
+
 
 // Meta 类方法定义
 void Meta::set_ext_x_version(int ext_x_version) {

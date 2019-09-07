@@ -39,11 +39,13 @@ public:
 
 };
 
+
 // 存储流媒体备份源的相关信息
 class StreamInf {
 private:
   string url_ = ""; // 备份源地址
   std::map<string, string> info_; // 备份源信息
+
 public:
   StreamInf(string url_);
   ~StreamInf();
