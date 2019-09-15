@@ -1,2 +1,2 @@
 # WalkFire
-A M3U8 Streaming Media Downloader
+一个 M3U8 流媒体下载器

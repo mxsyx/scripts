@@ -1,20 +1,22 @@
-//
+// 版权所有 (c) 2019 - WalkFire 作者保留所有权利
+// 该软件源代码受 GNU GENERAL PUBLIC 3 许可证控制
 
-#ifndef WFIRE_META_H_
-#define WFIRE_MATE_H_
+#ifndef _WFIRE_VIDEOMETA_H__
+#define _WFIRE_VIDEOMATE_H__
 
 #include <string>
 #include <vector>
 #include <stack>
 #include <map>
 
+
 namespace wfire {
 
 using std::string;
 
-
-// 存储流媒体片段的相关信息
-class Stream {
+// 封装流媒体片段的相关信息
+// 一个流媒体片段即是一个.ts文件
+class Fragment {
 private:
   string url_ = NULL;    // 流媒体片段地址
   double extinf_ = 0.0;  // 流媒体片段时长
@@ -22,12 +24,12 @@ private:
   bool isdownload_ = false;
 
 public:
-  Stream(string url, double extinf);
-  ~Stream();
+  Fragment(string url, double extinf);
+  ~Fragment();
 
   // 设置流媒体片段的下载历时
   void set_download_duration(double download_duration);
-  
+
   // 设置流媒体片段是否下载完成
   void set_isdownload(bool isdownload);
 
@@ -36,11 +38,11 @@ public:
 
   // 返回流媒体片段是否下载完成
   bool isdownload();
-
 };
 
 
-// 存储流媒体备份源的相关信息
+// 封装流媒体备份源的相关信息
+
 class StreamInf {
 private:
   string url_ = ""; // 备份源地址
@@ -50,22 +52,24 @@ public:
   StreamInf(string url_);
   ~StreamInf();
 
-  // 设置存储流媒体备份源的信息
+  // 设置流媒体备份源的信息
+  // 流媒体备份源通常包含一组键值对
   void set_info(string parameter, string value);
 };
 
 
-class Meta {
+// 封装流媒体的相关信息
+class VideoMeta {
 private:
   int ext_x_version_ = 3;
   int ext_x_media_sequence_ = 0;
   double ext_x_targetduration_ = 0.0;
   std::stack<StreamInf> ext_x_stream_inf;
-  std::vector<Stream> streams_;
+  std::vector<Fragment> fragments_;
 
 public:
-    Meta();
-    ~Meta();
+    VideoMeta();
+    ~VideoMeta();
 
     // 设置M3U8文件的版本（一般为3）
     void set_ext_x_version(int ext_x_version);
@@ -85,10 +89,10 @@ public:
     // 返回播放列表第一个流媒体片段的序列号
     int ext_x_media_sequence();
 
-    // 向任务流媒体列表追加一个流
-    void append_stream(string url, double extinf);
+    // 向流媒体片段列表追加一个片段
+    void append_fragment(string url, double extinf);
 };
 
 }
 
-#endif
+#endif // _WFIRE_VIDEOMETA_H__
