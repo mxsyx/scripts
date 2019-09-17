@@ -1,14 +1,13 @@
 // 版权所有 (c) 2019 - WalkFire 作者保留所有权利
 // 该软件源代码受 GNU GENERAL PUBLIC LICENSE 控制
 
-#ifndef _WFIRE_VIDEOMETA_H__
-#define _WFIRE_VIDEOMATE_H__
+#ifndef WALKFIRE_CORE_VIDEOMETA_H_
+#define WALKFIRE_CORE_VIDEOMETA_H_
 
 #include <string>
 #include <vector>
 #include <stack>
 #include <map>
-
 
 namespace wfire {
 
@@ -40,9 +39,7 @@ public:
   bool isdownload();
 };
 
-
 // 封装流媒体备份源的相关信息
-
 class StreamInf {
 private:
   string url_ = ""; // 备份源地址
@@ -57,14 +54,13 @@ public:
   void set_info(string parameter, string value);
 };
 
-
 // 封装流媒体的相关信息
 class VideoMeta {
 private:
   int ext_x_version_ = 3;
   int ext_x_media_sequence_ = 0;
   double ext_x_targetduration_ = 0.0;
-  std::stack<StreamInf> ext_x_stream_inf;
+  std::stack<StreamInf> ext_x_stream_inf_;
   std::vector<Fragment> fragments_;
 
 public:

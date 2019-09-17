@@ -3,9 +3,12 @@
 
 #include <dirent.h>
 #include <sys/stat.h>
+
 #include <iostream>
 #include <string>
 #include <map>
+
+#include "../include/walkfire/global.h"
 #include "../include/walkfire/cmdline.h"
 #include "../include/walkfire/downloader.h"
 
@@ -14,16 +17,15 @@ using std::cout;
 using std::string;
 using std::map;
 
-string WORKSPACE = NULL;
 
 // 解析命令行参数
-map<string, string> ParseCmd(int argc, char *argv[]) {
+std::map<string, string> ParseCmd(int argc, char *argv[]) {
   cmdline::parser parser;
   parser.add<string>("url", 'u', "指定下载地址", true);
   parser.add<string>("dir", 'd', "指定工作目录", false, "wfire");
   parser.parse_check(argc, argv);
 
-  map<string, string> parameters;
+  std::map<string, string> parameters;
   parameters["url"] = parser.get<string>("url");
   parameters["dir"] = parser.get<string>("dir");
   return parameters;
@@ -44,8 +46,8 @@ int main(int argc, char *argv[]) {
   map<string, string> parameters = ParseCmd(argc, argv);
   
   // 检查工作目录
-  WORKSPACE = parameters["dir"];
-  CheckDir(WORKSPACE);
+  wfire::WORKSPACE = parameters["dir"];
+  CheckDir(wfire::WORKSPACE);
   
   string url = parameters["url"];
   

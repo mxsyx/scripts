@@ -72,4 +72,3 @@ void VideoMeta::append_fragment(string url, double extinf) {
   Fragment fragment(url, extinf);
   fragments_.push_back(fragment);
 }
-
