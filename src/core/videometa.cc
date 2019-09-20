@@ -1,20 +1,19 @@
 // 版权所有 (c) 2019 - WalkFire 作者保留所有权利
 // 该软件源代码受 GNU GENERAL PUBLIC LICENSE 控制
 
-#include "../include/walkfire/videometa.h"
+#include "videometa.h"
 
 using std::string;
-using std::vector;
-using wfire::Fragment;
-using wfire::StreamInf;
-using wfire::VideoMeta;
 
+namespace wfire {
 
 // Fragment 类方法定义
 Fragment::Fragment(string url, double extinf) {
   url_ = url;
   extinf_ = extinf;
 }
+
+Fragment::~Fragment() {}
 
 void Fragment::set_download_duration(double download_duration) {
   download_duration_ = download_duration;
@@ -38,12 +37,19 @@ StreamInf::StreamInf(string url) {
   url_ = url;
 }
 
-StreamInf::set_info(string parameter, string value) {
+StreamInf::~StreamInf() {}
+
+void StreamInf::set_info(string parameter, string value) {
   info_[parameter] = value;
 }
 
 
 // VideoMeta 类方法定义
+
+VideoMeta::VideoMeta() {}
+
+VideoMeta::~VideoMeta() {}
+
 void VideoMeta::set_ext_x_version(int ext_x_version) {
   ext_x_version_ = ext_x_version;
 }
@@ -68,7 +74,13 @@ int VideoMeta::ext_x_media_sequence() {
   return ext_x_media_sequence_;
 }
 
+void VideoMeta::append_streaminf(StreamInf streaminf) {
+
+}
+
 void VideoMeta::append_fragment(string url, double extinf) {
   Fragment fragment(url, extinf);
   fragments_.push_back(fragment);
 }
+
+}  // namespace wfire

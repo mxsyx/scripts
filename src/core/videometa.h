@@ -6,12 +6,11 @@
 
 #include <string>
 #include <vector>
-#include <stack>
 #include <map>
 
-namespace wfire {
-
 using std::string;
+
+namespace wfire {
 
 // 封装流媒体片段的相关信息
 // 一个流媒体片段即是一个.ts文件
@@ -42,11 +41,11 @@ public:
 // 封装流媒体备份源的相关信息
 class StreamInf {
 private:
-  string url_ = ""; // 备份源地址
+  string url_ = NULL; // 备份源地址
   std::map<string, string> info_; // 备份源信息
 
 public:
-  StreamInf(string url_);
+  StreamInf(string url);
   ~StreamInf();
 
   // 设置流媒体备份源的信息
@@ -60,7 +59,7 @@ private:
   int ext_x_version_ = 3;
   int ext_x_media_sequence_ = 0;
   double ext_x_targetduration_ = 0.0;
-  std::stack<StreamInf> ext_x_stream_inf_;
+  std::vector<StreamInf> ext_x_stream_inf_;
   std::vector<Fragment> fragments_;
 
 public:
@@ -85,10 +84,13 @@ public:
     // 返回播放列表第一个流媒体片段的序列号
     int ext_x_media_sequence();
 
+    // 向备份原列表追加一个备份源
+    void append_streaminf(StreamInf straeminf);
+    
     // 向流媒体片段列表追加一个片段
     void append_fragment(string url, double extinf);
 };
 
-}
+}  // namespace wfire
 
-#endif // _WFIRE_VIDEOMETA_H__
+#endif  // WALKFIRE_CORE_VIDEOMETA_H_

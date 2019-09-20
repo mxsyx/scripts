@@ -25,7 +25,8 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#pragma once
+#ifndef WALKFIRE_CORE_CMDLINE_H_
+#define WALKFIRE_CORE_CMDLINE_H_
 
 #include <iostream>
 #include <sstream>
@@ -807,3 +808,13 @@ private:
 };
 
 } // cmdline
+
+
+namespace wfire {
+
+// 解析命令行参数
+std::map<std::string, std::string> ParseCmd(int argc, char *argv[]);
+
+}  // namespace wfire
+
+#endif  // WALKFIRE_CORE_CMDLINE_H_
