@@ -1,8 +1,8 @@
 // 版权所有 (c) 2019 - WalkFire 作者保留所有权利
 // 该软件源代码受 GNU GENERAL PUBLIC LICENSE 控制
-// 公共函数库文件
+// 通用公共函数库文件
 
-#include "utils.h"
+#include "common.h"
 #include <dirent.h>
 #include <sys/stat.h>
 #include <chrono>
@@ -19,14 +19,14 @@ void CheckDir(std::string dir) {
     mkdir(dir.c_str(), S_IRWXU);
 }
 
-std::string MakeFilename() {
+std::string MakeFilename(std::string suffix) {
     std::chrono::milliseconds ms = 
     std::chrono::duration_cast< std::chrono::milliseconds >(
         std::chrono::system_clock::now().time_since_epoch()
     );
     std::stringstream ss;
     ss << ms.count();
-    return ss.str();
+    return ss.str() + suffix;
 }
   
 }  // namespace utils

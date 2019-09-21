@@ -527,19 +527,19 @@ public:
 
   void parse_check(const std::string &arg){
     if (!options.count("help"))
-      add("help", '?', "print this message");
+      add("help", 'h', "显示此帮助信息");
     check(0, parse(arg));
   }
 
   void parse_check(const std::vector<std::string> &args){
     if (!options.count("help"))
-      add("help", '?', "print this message");
+      add("help", 'h', "显示此帮助信息");
     check(args.size(), parse(args));
   }
 
   void parse_check(int argc, char *argv[]){
     if (!options.count("help"))
-      add("help", '?', "print this message");
+      add("help", 'h', "显示此帮助信息");
     check(argc, parse(argc, argv));
   }
 

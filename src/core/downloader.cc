@@ -3,7 +3,7 @@
 
 #include "downloader.h"
 #include <curl/curl.h>
-#include "utils.h"
+#include <iostream>
 
 using std::string;
 
@@ -18,18 +18,22 @@ int Downloader::WriteData(void *ptr, size_t size, size_t nmemb, void *fp) {
   return written;
 }
 
-void Downloader::DownloadM3U8(string url, string dir) {
+string Downloader::DownloadM3U8(string url, string filepath) {
   curl_global_init(CURL_GLOBAL_ALL);
   CURL *curl = curl_easy_init();
   
-  string filename = dir + utils::MakeFilename() + ".m3u8";
-  FILE *fp = fopen(filename.c_str(), "w");
+  std::cout << "下载流媒体索引文件\n  地址为：" + url << std::endl;
+  FILE *fp = fopen(filepath.c_str(), "w");
   curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
   curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, Downloader::WriteData);
   curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
   curl_easy_perform(curl);
+  fclose(fp);
+  std::cout << "文件已保存到：" + filepath << std::endl;
+
   curl_easy_cleanup(curl);
   curl_global_cleanup();
+  return filepath;
 }
 
 }  // namespace wfire

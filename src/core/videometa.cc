@@ -1,5 +1,6 @@
 // 版权所有 (c) 2019 - WalkFire 作者保留所有权利
 // 该软件源代码受 GNU GENERAL PUBLIC LICENSE 控制
+// 定义了视频的源信息类
 
 #include "videometa.h"
 
@@ -45,7 +46,6 @@ void StreamInf::set_info(string parameter, string value) {
 
 
 // VideoMeta 类方法定义
-
 VideoMeta::VideoMeta() {}
 
 VideoMeta::~VideoMeta() {}
@@ -74,8 +74,9 @@ int VideoMeta::ext_x_media_sequence() {
   return ext_x_media_sequence_;
 }
 
-void VideoMeta::append_streaminf(StreamInf streaminf) {
-
+void VideoMeta::append_streaminf(string url) {
+  StreamInf streaminf(url);
+  ext_x_stream_inf_.push_back(streaminf);
 }
 
 void VideoMeta::append_fragment(string url, double extinf) {

@@ -19,10 +19,12 @@ public:
   ~Downloader();
   
   // 下载流媒体文件
-  void DownloadTS(string url, string dir);
+  string DownloadTS(string url, string dir);
   
   // 下载M3U8索引文件
-  void DownloadM3U8(string url, string dir);
+  // @param url M3U8索引文件的链接
+  // @param filepath M3U8索引文件的存储路径
+  string DownloadM3U8(string url, string filepath);
 
 };
 

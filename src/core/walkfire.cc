@@ -1,33 +1,37 @@
 // 版权所有 (c) 2019 - WalkFire 作者保留所有权利
 // 该软件源代码受 GNU GENERAL PUBLIC LICENSE 控制
+// 作者：江南的茶叶有甜 (zsimline@163.com)
 
-#include "utils.h"
+#include "common.h"
 #include "cmdline.h"
 #include "videometa.h"
+#include "m3u8parser.h"
 #include "downloader.h"
 
 using std::string;
 
-// 视频源信息对象
-wfire::VideoMeta videometa;
-
-
 int main(int argc, char *argv[]) {
+  // 解析命令行参数
   std::map<string, string> parameters = wfire::ParseCmd(argc, argv);
   
+  // 视频源信息对象
+  wfire::VideoMeta videometa;
+  // M3U8文件的链接
   string url(parameters["url"]);
-  string workspace(parameters["dir"]);
+  // 程序工作目录
+  string workspace(parameters["dir"] + "/");
 
   // 检查工作目录
   wfire::utils::CheckDir(workspace);
 
-
-  wfire::StreamInf streaminf(url);
-  videometa.append_streaminf(streaminf);
+  videometa.append_streaminf(url);
   
+  string filepath = workspace + wfire::utils::MakeFilename(".m3u8");
+
   wfire::Downloader downloader;
+  downloader.DownloadM3U8(url, filepath);
 
-  downloader.DownloadM3U8(url, workspace);
-
+  wfire::M3U8Parser m3u8parser;
+  std::cout << m3u8parser.IsM3U8(filepath);
   return 0;
 }

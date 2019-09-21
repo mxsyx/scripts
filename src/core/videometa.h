@@ -1,5 +1,6 @@
 // 版权所有 (c) 2019 - WalkFire 作者保留所有权利
 // 该软件源代码受 GNU GENERAL PUBLIC LICENSE 控制
+// 定义了视频的源信息类
 
 #ifndef WALKFIRE_CORE_VIDEOMETA_H_
 #define WALKFIRE_CORE_VIDEOMETA_H_
@@ -16,7 +17,7 @@ namespace wfire {
 // 一个流媒体片段即是一个.ts文件
 class Fragment {
 private:
-  string url_ = NULL;    // 流媒体片段地址
+  string url_;  // 流媒体片段地址
   double extinf_ = 0.0;  // 流媒体片段时长
   double download_duration_ = 0.0;
   bool isdownload_ = false;
@@ -41,7 +42,7 @@ public:
 // 封装流媒体备份源的相关信息
 class StreamInf {
 private:
-  string url_ = NULL; // 备份源地址
+  string url_; // 备份源地址
   std::map<string, string> info_; // 备份源信息
 
 public:
@@ -85,7 +86,7 @@ public:
     int ext_x_media_sequence();
 
     // 向备份原列表追加一个备份源
-    void append_streaminf(StreamInf straeminf);
+    void append_streaminf(string url);
     
     // 向流媒体片段列表追加一个片段
     void append_fragment(string url, double extinf);
