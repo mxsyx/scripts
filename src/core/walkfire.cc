@@ -17,21 +17,21 @@ int main(int argc, char *argv[]) {
   // 视频源信息对象
   wfire::VideoMeta videometa;
   // M3U8文件的链接
-  string url(parameters["url"]);
+  const string url(parameters["url"]);
   // 程序工作目录
-  string workspace(parameters["dir"] + "/");
+  const string workspace(parameters["dir"] + "/");
 
   // 检查工作目录
   wfire::utils::CheckDir(workspace);
 
   videometa.append_streaminf(url);
   
-  string filepath = workspace + wfire::utils::MakeFilename(".m3u8");
+  const string filepath = workspace + wfire::utils::MakeFilename(".m3u8");
 
   wfire::Downloader downloader;
   downloader.DownloadM3U8(url, filepath);
 
   wfire::M3U8Parser m3u8parser;
-  std::cout << m3u8parser.IsM3U8(filepath);
+  std::cout << m3u8parser.IsStreamInf(filepath);
   return 0;
 }
