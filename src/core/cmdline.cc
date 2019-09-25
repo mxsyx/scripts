@@ -11,9 +11,9 @@ namespace wfire {
 // 解析命令行参数
 std::map<string, string> ParseCmd(int argc, char *argv[]) {
   cmdline::parser parser;
-  parser.add<std::string>("url", 'u', "指定下载地址", true);
-  parser.add<std::string>("dir", 'd', "指定工作目录", false, "wfspace");
-  parser.add<std::string>("filename", 'f', "指定输出的文件名", true);
+  parser.add<string>("url", 'u', "指定下载地址", true);
+  parser.add<string>("dir", 'd', "指定工作目录", false, "wfspace");
+  parser.add<string>("filename", 'f', "指定输出的文件名", true);
   parser.parse_check(argc, argv);
 
   std::map<string, string> parameters;

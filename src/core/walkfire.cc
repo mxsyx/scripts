@@ -12,22 +12,24 @@ using std::string;
 
 int main(int argc, char *argv[]) {
   // 解析命令行参数
-  std::map<string, string> parameters = wfire::ParseCmd(argc, argv);
+  std::map<string, string> parameters(wfire::ParseCmd(argc, argv));
   
   // 视频源信息对象
   wfire::VideoMeta videometa;
   // M3U8文件的链接
   const string url(parameters["url"]);
+  // 输出的文件名
+  const string filename(parameters["filename"] + "/");
   // 程序工作目录
-  const string workspace(parameters["dir"] + "/");
+  const string workspace(parameters["workspace"] + "/");
 
   // 检查工作目录
   wfire::utils::CheckDir(workspace);
 
-  videometa.append_streaminf(url);
+  const string filepath(workspace + filename + wfire::utils::MakeFilename(".m3u8"));
   
-  const string filepath = workspace + wfire::utils::MakeFilename(".m3u8");
-
+  std::cout << filepath;
+  videometa.append_streaminf(url);
   wfire::Downloader downloader;
   downloader.DownloadM3U8(url, filepath);
 
