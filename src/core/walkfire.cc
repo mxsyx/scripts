@@ -2,38 +2,46 @@
 // 该软件源代码受 GNU GENERAL PUBLIC LICENSE 控制
 // 作者：江南的茶叶有甜 (zsimline@163.com)
 
+#include "walkfire.h"
 #include "common.h"
 #include "cmdline.h"
-#include "videometa.h"
-#include "m3u8parser.h"
-#include "downloader.h"
 
 using std::string;
+
+void Download(const string start_url, const string cache_path_m3u8) {
+  string filepath(cache_path_m3u8 + wfire::utils::MakeFilename(".m3u8"));
+  wfire::downloader.DownloadM3U8(start_url, filepath);
+  string next_url;
+  while(wfire::m3u8parser.IsStreamInf(filepath)) {
+    string backup_url =  wfire::m3u8parser.ExtractBackupUrl(filepath);
+    wfire::utils::SpliceUrl(start_url, backup_url);
+  }
+}
+
+
+
 
 int main(int argc, char *argv[]) {
   // 解析命令行参数
   std::map<string, string> parameters(wfire::ParseCmd(argc, argv));
-  
-  // 视频源信息对象
-  wfire::VideoMeta videometa;
-  // M3U8文件的链接
-  const string url(parameters["url"]);
+
+  // 起始地址
+  const string start_url(parameters["url"]);
   // 输出的文件名
-  const string filename(parameters["filename"] + "/");
+  const string filename(parameters["filename"]);
   // 程序工作目录
   const string workspace(parameters["workspace"] + "/");
 
+
   // 检查工作目录
+  const string cache_path(workspace + "cahce/");
+  const string cache_path_m3u8(cache_path + "m3u8/");
+  const string cache_path_ts(cache_path + "ts/");
   wfire::utils::CheckDir(workspace);
+  wfire::utils::CheckDir(cache_path);
+  wfire::utils::CheckDir(cache_path_m3u8);
+  wfire::utils::CheckDir(cache_path_ts);
 
-  const string filepath(workspace + filename + wfire::utils::MakeFilename(".m3u8"));
-  
-  std::cout << filepath;
-  videometa.append_streaminf(url);
-  wfire::Downloader downloader;
-  downloader.DownloadM3U8(url, filepath);
 
-  wfire::M3U8Parser m3u8parser;
-  std::cout << m3u8parser.IsStreamInf(filepath);
   return 0;
 }

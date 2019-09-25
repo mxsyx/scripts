@@ -59,4 +59,16 @@ bool M3U8Parser::IsStreamInf(const string &filepath) {
   }
 }
 
+string M3U8Parser::ExtractBackupUrl(const string &filepath) {
+  string rgx_string(ReadM3U8File(filepath));
+  std::regex rgx("[^\n#].*\\.m3u8");
+  std::smatch search_result;
+  std::regex_search(rgx_string, search_result, rgx);
+  if(search_result.size()) {
+    return search_result[0];
+  } else {
+    return "";
+  }
+}
+
 } // namespace wfire

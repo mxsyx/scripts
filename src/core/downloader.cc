@@ -18,7 +18,7 @@ int Downloader::WriteData(void *ptr, size_t size, size_t nmemb, void *fp) {
   return written;
 }
 
-string Downloader::DownloadM3U8(string url, string filepath) {
+string Downloader::DownloadM3U8(const string &url, const string &filepath) {
   curl_global_init(CURL_GLOBAL_ALL);
   CURL *curl = curl_easy_init();
   

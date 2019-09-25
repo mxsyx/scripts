@@ -12,14 +12,14 @@ namespace wfire {
 std::map<string, string> ParseCmd(int argc, char *argv[]) {
   cmdline::parser parser;
   parser.add<string>("url", 'u', "指定下载地址", true);
-  parser.add<string>("dir", 'd', "指定工作目录", false, "wfspace");
-  parser.add<string>("filename", 'f', "指定输出的文件名", true);
+  parser.add<string>("filename",  'f', "指定输出的文件名", true);
+  parser.add<string>("workspace", 'w', "指定工作目录", false, "wfspace");
   parser.parse_check(argc, argv);
 
   std::map<string, string> parameters;
   parameters["url"] = parser.get<string>("url");
-  parameters["dir"] = parser.get<string>("dir");
   parameters["filename"] = parser.get<string>("filename");
+  parameters["workspace"] = parser.get<string>("workspace");
   return parameters;
 }
 

@@ -35,6 +35,11 @@ public:
   // @return 文件是M3U8备份源文件返回true,否则返回flase
   bool IsStreamInf(const string &filepath);
 
+  // 从M3U8备份源文件中提取备份源地址
+  // @param filepath M3U8文件存储路径
+  // @return 提取到的M3U8备份原地址
+  string ExtractBackupUrl(const string &filepath);
+
 };
 
 }  // namespace wfire
