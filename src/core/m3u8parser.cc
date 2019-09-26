@@ -6,6 +6,7 @@
 #include <regex>
 #include <fstream>
 #include <iostream>
+#include <vector>
 
 using std::string;
 
@@ -68,6 +69,20 @@ string M3U8Parser::ExtractBackupUrl(const string &filepath) {
     return search_result[0];
   } else {
     return "";
+  }
+}
+
+void M3U8Parser::ParserM3U8(const string &filepath) {
+  string rgx_string(ReadM3U8File(filepath));
+  std::vector<string> fragment_urls;
+  if(IsM3U8(rgx_string)) {
+    std::regex rgx(".*\\.ts");
+    std::smatch search_result;
+    std::regex_token_iterator<std::string::iterator> rend;
+    std::regex_token_iterator<std::string::iterator> rgx_iterator(
+                        rgx_string.begin(), rgx_string.end(), rgx);
+    while(rgx_iterator != rend)
+      fragment_urls.push_back(*rgx_iterator++);
   }
 }
 

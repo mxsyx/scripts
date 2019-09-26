@@ -28,7 +28,7 @@ public:
   ~M3U8Parser();
 
   // 解析M3U8文件
-  void ParserM3U8();
+  void ParserM3U8(const string &filepath);
 
   // 判断一个文件是否为M3U8备份源文件
   // @param filepath M3U8文件存储路径
