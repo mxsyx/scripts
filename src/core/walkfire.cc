@@ -8,18 +8,25 @@
 
 using std::string;
 
-void Download(const string start_url, const string cache_path_m3u8) {
-  string filepath(cache_path_m3u8 + wfire::utils::MakeFilename(".m3u8"));
-  wfire::downloader.DownloadM3U8(start_url, filepath);
-  string next_url;
-  while(wfire::m3u8parser.IsStreamInf(filepath)) {
-    string backup_url =  wfire::m3u8parser.ExtractBackupUrl(filepath);
-    wfire::utils::SpliceUrl(start_url, backup_url);
-  }
+// 下载M3U8索引文件
+// 如果下载的文件不是最终包含TS文件链接的M3U8文件，
+// 而是指向了一个M3U8备份文件，则去下载这个备份文件
+// @param next_url 下一个将被下载文件的链接
+// @param cache_path_m3u8 M3U8文件的缓存目录
+string DownloadM3U8(string next_url, const string &cache_path_m3u8) {
+  string filepath;
+  do{
+    filepath = cache_path_m3u8 + wfire::utils::MakeFilename(".m3u8");
+    wfire::downloader.DownloadM3U8(next_url, filepath);
+    if(wfire::m3u8parser.IsStreamInf(filepath)){
+      string backup_url =  wfire::m3u8parser.ExtractBackupUrl(filepath);
+      next_url = wfire::utils::SpliceUrl(next_url, backup_url);
+    } else {
+      next_url = "";
+    }
+  }while(!next_url.empty());
+  return filepath;
 }
-
-
-
 
 int main(int argc, char *argv[]) {
   // 解析命令行参数
@@ -33,15 +40,20 @@ int main(int argc, char *argv[]) {
   const string workspace(parameters["workspace"] + "/");
 
 
-  // 检查工作目录
-  const string cache_path(workspace + "cahce/");
+  // 缓存文件根目录
+  const string cache_path(workspace + "cache/");
+  // M3U8文件缓存目录
   const string cache_path_m3u8(cache_path + "m3u8/");
+  // TS文件缓存目录
   const string cache_path_ts(cache_path + "ts/");
+  
+  // 检查工作目录是否存在
   wfire::utils::CheckDir(workspace);
   wfire::utils::CheckDir(cache_path);
   wfire::utils::CheckDir(cache_path_m3u8);
   wfire::utils::CheckDir(cache_path_ts);
 
-
+  string m3u8_filepath(DownloadM3U8(start_url, cache_path_m3u8));
+  
   return 0;
 }
