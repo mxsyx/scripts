@@ -8,27 +8,27 @@ using std::string;
 
 namespace wfire {
 
-// Fragment 类方法定义
-Fragment::Fragment(string url, double extinf) {
+// TS 类方法定义
+TS::TS(string url, double extinf) {
   url_ = url;
   extinf_ = extinf;
 }
 
-Fragment::~Fragment() {}
+TS::~TS() {}
 
-void Fragment::set_download_duration(double download_duration) {
+void TS::set_download_duration(double download_duration) {
   download_duration_ = download_duration;
 }
 
-void Fragment::set_isdownload(bool isdownload) {
+void TS::set_isdownload(bool isdownload) {
   isdownload_ = isdownload;
 }
 
-bool Fragment::isdownload() {
+bool TS::isdownload() {
   return isdownload_;
 }
 
-double Fragment::download_duration() {
+double TS::download_duration() {
   return download_duration_;
 }
 
@@ -74,14 +74,14 @@ int VideoMeta::ext_x_media_sequence() {
   return ext_x_media_sequence_;
 }
 
-void VideoMeta::append_streaminf(string url) {
+void VideoMeta::AppendStreamInf(string url) {
   StreamInf streaminf(url);
-  ext_x_stream_inf_.push_back(streaminf);
+  ext_x_stream_infs_.push_back(streaminf);
 }
 
-void VideoMeta::append_fragment(string url, double extinf) {
-  Fragment fragment(url, extinf);
-  fragments_.push_back(fragment);
+void VideoMeta::AppendTS(string url, double extinf) {
+  TS ts(url, extinf);
+  tses_.push_back(ts);
 }
 
 }  // namespace wfire

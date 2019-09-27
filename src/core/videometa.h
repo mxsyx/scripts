@@ -1,6 +1,6 @@
 // 版权所有 (c) 2019 - WalkFire 作者保留所有权利
 // 该软件源代码受 GNU GENERAL PUBLIC LICENSE 控制
-// 定义了视频的源信息类
+// 定义了流媒体的源信息类
 
 #ifndef WALKFIRE_CORE_VIDEOMETA_H_
 #define WALKFIRE_CORE_VIDEOMETA_H_
@@ -13,9 +13,9 @@ using std::string;
 
 namespace wfire {
 
-// 封装流媒体片段的相关信息
+// 封装流媒体片段的源信息
 // 一个流媒体片段即是一个.ts文件
-class Fragment {
+class TS {
 private:
   string url_;  // 流媒体片段地址
   double extinf_ = 0.0;  // 流媒体片段时长
@@ -23,8 +23,8 @@ private:
   bool isdownload_ = false;
 
 public:
-  Fragment(string url, double extinf);
-  ~Fragment();
+  TS(string url, double extinf);
+  ~TS();
 
   // 设置流媒体片段的下载历时
   void set_download_duration(double download_duration);
@@ -39,7 +39,7 @@ public:
   bool isdownload();
 };
 
-// 封装流媒体备份源的相关信息
+// 封装流媒体备份源的源信息
 class StreamInf {
 private:
   string url_; // 备份源地址
@@ -60,8 +60,8 @@ private:
   int ext_x_version_ = 3;
   int ext_x_media_sequence_ = 0;
   double ext_x_targetduration_ = 0.0;
-  std::vector<StreamInf> ext_x_stream_inf_;
-  std::vector<Fragment> fragments_;
+  std::vector<StreamInf> ext_x_stream_infs_;
+  std::vector<TS> tses_;
 
 public:
     VideoMeta();
@@ -85,11 +85,11 @@ public:
     // 返回播放列表第一个流媒体片段的序列号
     int ext_x_media_sequence();
 
-    // 向备份原列表追加一个备份源
-    void append_streaminf(string url);
+    // 向备份源列表追加一个备份源
+    void AppendStreamInf(string url);
     
     // 向流媒体片段列表追加一个片段
-    void append_fragment(string url, double extinf);
+    void AppendTS(string url, double extinf);
 };
 
 }  // namespace wfire

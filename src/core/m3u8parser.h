@@ -6,8 +6,10 @@
 #define WALKFIRE_CORE_URLPARSER_H_
 
 #include <string>
+#include <vector>
 
 using std::string;
+using std::vector;
 
 namespace wfire {
 
@@ -22,6 +24,28 @@ private:
   // @param rgx_string M3U8文件内容字符串
   // @return 文件是M3U8文件返回true,否则返回flase
   bool IsM3U8(const string &rgx_string);
+
+  // 提取流媒体片段的链接
+  // @param rgx_string M3U8文件内容字符串
+  // @return 流媒体片段链接列表
+  vector<string> ExtractTSUrls(const string &rgx_string);
+
+  // 提取流媒体片段的时长
+  // @param rgx_string M3U8文件内容字符串
+  // @return 流媒体片段时长列表
+  vector<string> ExtractExtInfs(const string &rgx_string);
+
+  // 提取流媒体版本
+  // @param rgx_string M3U8文件内容字符串
+  int ExtractExtXVersion(const string &rgx_string);
+  
+  // 提取流媒体片段最大时长
+  // @param rgx_string M3U8文件内容字符串
+  int ExtractExtXTargetDuration(const string &rgx_string);
+  
+  // 提取第一个流媒体片段的序列号
+  // @param rgx_string M3U8文件内容字符串
+  int ExtractExtXMediaSequence(const string &rgx_string);
 
 public:
   M3U8Parser();
