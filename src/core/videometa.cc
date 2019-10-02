@@ -16,6 +16,10 @@ TS::TS(string url, double extinf) {
 
 TS::~TS() {}
 
+void TS::set_filepath(string filepath) {
+  filepath_ = filepath;
+}
+
 void TS::set_download_duration(double download_duration) {
   download_duration_ = download_duration;
 }
@@ -24,11 +28,23 @@ void TS::set_isdownload(bool isdownload) {
   isdownload_ = isdownload;
 }
 
-bool TS::isdownload() {
+string TS::url() const {
+  return url_;
+}
+
+string TS::filepath() const {
+  return filepath_;
+}
+
+double TS::extinf() const {
+  return extinf_;
+}
+
+bool TS::isdownload() const {
   return isdownload_;
 }
 
-double TS::download_duration() {
+double TS::download_duration() const {
   return download_duration_;
 }
 
@@ -82,6 +98,14 @@ void VideoMeta::AppendStreamInf(string url) {
 void VideoMeta::AppendTS(string url, double extinf) {
   TS ts(url, extinf);
   tses_.push_back(ts);
+}
+
+TS& VideoMeta::Tses(int index) {
+  return tses_[index];
+}
+
+int VideoMeta::TsNums() {
+  return tses_.size();
 }
 
 }  // namespace wfire

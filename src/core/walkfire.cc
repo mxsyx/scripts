@@ -5,31 +5,67 @@
 #include "walkfire.h"
 #include "common.h"
 #include "cmdline.h"
+#include <vector>
 
 using std::string;
+using std::vector;
 
-// 下载M3U8索引文件
-// 如果下载的文件不是最终包含TS文件链接的M3U8文件，
-// 而是指向了一个M3U8备份文件，则去下载这个备份文件
-// @param next_url 下一个将被下载的文件的链接
-// @param cache_path_m3u8 M3U8文件的缓存目录
+namespace wfire {
+
 string DownloadM3U8(string next_url, const string &cache_path_m3u8) {
   string filepath;  // 下载的M3U8文件存储路径
-  string backup_url;  // M3U8备份文件的链接
-  do {
-    filepath = cache_path_m3u8 + wfire::utils::MakeFilename(".m3u8");
-    wfire::downloader.DownloadM3U8(next_url, filepath);
-    wfire::m3u8parser.ChangeRgxString(filepath);
-    if(wfire::m3u8parser.IsStreamInf()) {
-      backup_url = wfire::m3u8parser.ExtractBackupUrl();
-      next_url = wfire::utils::SpliceUrl(next_url, backup_url);
-      std::cout << next_url << std::endl;
-    } else {
-      next_url = "";
-    }
-  } while(!next_url.empty());
+  while(!next_url.empty()) {
+    filepath = cache_path_m3u8 + utils::MakeFilename(".m3u8");
+    downloader.DownloadM3U8(next_url, filepath);
+    m3u8parser.ChangeRgxString(filepath);
+    next_url = (m3u8parser.IsStreamInf() ? utils::SpliceUrl(next_url,
+                                m3u8parser.ExtractBackupUrl()) : "");
+  }
   return filepath;
 }
+
+void SetExtXVersion() {
+  int ext_x_version = m3u8parser.ExtractExtXVersion();
+  videometa.set_ext_x_version(ext_x_version);
+}
+
+void SetExtXMediaSequence() {
+  int ext_x_media_sequence = m3u8parser.ExtractExtXMediaSequence();
+  videometa.set_ext_x_media_sequence(ext_x_media_sequence);
+}
+
+void SetExtXTargetDuration() {
+  double ext_x_targetduration = m3u8parser.ExtractExtXTargetDuration();
+  videometa.set_ext_x_targetduration(ext_x_targetduration);
+}
+
+void AppendTS() {
+  vector<string> ts_urls = m3u8parser.ExtractTSUrls();
+  vector<double> extinfs = m3u8parser.ExtractExtInfs();
+  const int ts_nums = ts_urls.size();
+  for(int i = 0; i < ts_nums; i++)
+    videometa.AppendTS(ts_urls[i], extinfs[i]);
+}
+
+void SetVideoMeta(const string &m3u8_filepath) {
+  m3u8parser.ChangeRgxString(m3u8_filepath);
+  SetExtXVersion();
+  SetExtXMediaSequence();
+  SetExtXTargetDuration();
+  AppendTS();
+}
+
+void DownloadTS(const string &cache_path_ts) {
+  const int ts_nums = videometa.TsNums();
+  string filepath;
+  for(int index = 0; index < ts_nums; index++) {
+    TS& ts = videometa.Tses(index);
+    filepath = cache_path_ts + utils::MakeFilename(".ts");
+    downloader.DownloadTS("https://youku.com-ok-163.com/20190905/1200_a8048943/1000k/hls/" + ts.url(), filepath);
+  }
+}
+
+}  // namespce wfire
 
 
 int main(int argc, char *argv[]) {
@@ -57,7 +93,8 @@ int main(int argc, char *argv[]) {
   wfire::utils::CheckDir(cache_path_m3u8);
   wfire::utils::CheckDir(cache_path_ts);
 
-  const string m3u8_filepath(DownloadM3U8(start_url, cache_path_m3u8));
-  
+  const string m3u8_filepath(wfire::DownloadM3U8(start_url, cache_path_m3u8));
+  wfire::SetVideoMeta(m3u8_filepath);
+  wfire::DownloadTS(cache_path_ts);
   return 0;
 }

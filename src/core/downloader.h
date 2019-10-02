@@ -22,7 +22,7 @@ public:
   // 下载流媒体文件
   // @param url TS文件的链接
   // @param filepath TS文件的存储路径
-  string DownloadTS(const string &url, const string &filepath);
+  void DownloadTS(const string &url, const string &filepath);
   
   // 下载M3U8索引文件
   // @param url M3U8索引文件的链接

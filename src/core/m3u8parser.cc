@@ -68,7 +68,7 @@ string M3U8Parser::ExtractBackupUrl() const{
   boost::smatch search_result;
   boost::regex_search(rgx_string_, search_result, rgx);
   if(search_result.size()) {
-    return search_result[0];
+    return search_result[0].str();
   } else {
     return "";
   }
@@ -78,7 +78,7 @@ int M3U8Parser::ExtractExtXVersion() const {
   boost::regex rgx("(?<=#EXT-X-VERSION:)\\d+");
   boost::smatch search_result;
   boost::regex_search(rgx_string_, search_result, rgx);
-  return stoi(search_result[0]);
+  return stoi(search_result[0].str());
 }
 
 vector<string> M3U8Parser::ExtractTSUrls() const {
@@ -95,32 +95,32 @@ vector<string> M3U8Parser::ExtractTSUrls() const {
   return ts_urls;
 }
 
-vector<string> M3U8Parser::ExtractExtInfs() const {
-  std::vector<string> extinfs;
+vector<double> M3U8Parser::ExtractExtInfs() const {
+  std::vector<double> extinfs;
   boost::regex rgx("(?<=#EXTINF:)\\d+\\.\\d+");
   boost::smatch search_result;
   boost::regex_token_iterator<string::const_iterator> rend;
   boost::regex_token_iterator<string::const_iterator> rgx_iterator(
                        rgx_string_.begin(), rgx_string_.end(), rgx);
   while(rgx_iterator != rend) {
-    extinfs.push_back((*rgx_iterator).str());
+    extinfs.push_back(stod((*rgx_iterator).str()));
     rgx_iterator++;
   }
   return extinfs;
+}
+
+int M3U8Parser::ExtractExtXMediaSequence() const {
+  boost::regex rgx("(?<=EXT-X-MEDIA-SEQUENCE:)\\d+");
+  boost::smatch search_result;
+  boost::regex_search(rgx_string_, search_result, rgx);
+  return stoi(search_result[0].str());
 }
 
 int M3U8Parser::ExtractExtXTargetDuration() const {
   boost::regex rgx("(?<=EXT-X-TARGETDURATION:)\\d+");
   boost::smatch search_result;
   boost::regex_search(rgx_string_, search_result, rgx);
-  return stoi(search_result[0]);
-}
-  
-int M3U8Parser::ExtractExtXMediaSequence() const {
-  boost::regex rgx("(?<=EXT-X-MEDIA-SEQUENCE:)\\d+");
-  boost::smatch search_result;
-  boost::regex_search(rgx_string_, search_result, rgx);
-  return stoi(search_result[0]);
+  return stoi(search_result[0].str());
 }
 
 } // namespace wfire

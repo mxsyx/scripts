@@ -53,7 +53,7 @@ public:
 
   // 提取流媒体片段的时长
   // @return 流媒体片段时长列表
-  vector<string> ExtractExtInfs() const;
+  vector<double> ExtractExtInfs() const;
 
   // 提取流媒体片段最大时长
   int ExtractExtXTargetDuration() const;

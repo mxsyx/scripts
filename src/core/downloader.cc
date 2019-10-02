@@ -37,4 +37,23 @@ string Downloader::DownloadM3U8(const string &url, const string &filepath) {
   return filepath;
 }
 
+void Downloader::DownloadTS(const string &url, const string &filepath) {
+  curl_global_init(CURL_GLOBAL_ALL);
+  CURL *curl = curl_easy_init();
+  
+  std::cout << std::endl << "[INFO]下载流媒体片段\n  - 地址为：" 
+            << url << std::endl;
+  FILE *fp = fopen(filepath.c_str(), "w");
+  curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+  curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, Downloader::WriteData);
+  curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
+  curl_easy_perform(curl);
+  fclose(fp);
+  std::cout << "  - 片段已保存到：" << filepath << std::endl;
+
+  curl_easy_cleanup(curl);
+  curl_global_cleanup();
+}
+
+
 }  // namespace wfire
