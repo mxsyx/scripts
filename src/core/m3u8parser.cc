@@ -32,10 +32,14 @@ string M3U8Parser::ReadM3U8File(const string &filepath) {
   }
 }
 
-bool M3U8Parser::IsM3U8(const string &rgx_string) {
+void M3U8Parser::ChangeRgxString(const string &filepath) {
+  rgx_string_ = ReadM3U8File(filepath);
+}
+
+bool M3U8Parser::IsM3U8() const {
   boost::regex rgx("#EXTM3U");
   boost::smatch search_result;
-  boost::regex_search(rgx_string, search_result, rgx);
+  boost::regex_search(rgx_string_, search_result, rgx);
   if(search_result.size()) {
     return true;
   } else {
@@ -43,14 +47,13 @@ bool M3U8Parser::IsM3U8(const string &rgx_string) {
   }
 }
 
-bool M3U8Parser::IsStreamInf(const string &filepath) {
-  string rgx_string(ReadM3U8File(filepath));
-  if(IsM3U8(rgx_string)) {
+bool M3U8Parser::IsStreamInf() const {
+  if(IsM3U8()) {
     boost::regex rgx("#EXT-X-STREAM-INF.*");
     boost::smatch search_result;
-    boost::regex_search(rgx_string, search_result, rgx);
+    boost::regex_search(rgx_string_, search_result, rgx);
     if(search_result.size()) {
-      return true;
+      return search_result[0].str().empty() ? false : true;
     } else {
       return false;
     }
@@ -60,11 +63,10 @@ bool M3U8Parser::IsStreamInf(const string &filepath) {
   }
 }
 
-string M3U8Parser::ExtractBackupUrl(const string &filepath) {
-  string rgx_string(ReadM3U8File(filepath));
-  boost::regex rgx("[^\n#].*\\.m3u8");
+string M3U8Parser::ExtractBackupUrl() const{
+  boost::regex rgx("(?<=\n)[^#].*");
   boost::smatch search_result;
-  boost::regex_search(rgx_string, search_result, rgx);
+  boost::regex_search(rgx_string_, search_result, rgx);
   if(search_result.size()) {
     return search_result[0];
   } else {
@@ -72,21 +74,20 @@ string M3U8Parser::ExtractBackupUrl(const string &filepath) {
   }
 }
 
-void M3U8Parser::ParserM3U8(const string &filepath) {
-  string rgx_string(ReadM3U8File(filepath));
-  std::vector<string> fragment_urls;
-  if(IsM3U8(rgx_string)) {
-    // TODO
-  }
+int M3U8Parser::ExtractExtXVersion() const {
+  boost::regex rgx("(?<=#EXT-X-VERSION:)\\d+");
+  boost::smatch search_result;
+  boost::regex_search(rgx_string_, search_result, rgx);
+  return stoi(search_result[0]);
 }
 
-vector<string> M3U8Parser::ExtractTSUrls(const string &rgx_string) {
+vector<string> M3U8Parser::ExtractTSUrls() const {
   std::vector<string> ts_urls;
   boost::regex rgx("(?<=\n)[^#].*?(?=\n)");
   boost::smatch search_result;
   boost::regex_token_iterator<string::const_iterator> rend;
   boost::regex_token_iterator<string::const_iterator> rgx_iterator(
-                         rgx_string.begin(), rgx_string.end(), rgx);
+                       rgx_string_.begin(), rgx_string_.end(), rgx);
   while(rgx_iterator != rend) {
     ts_urls.push_back((*rgx_iterator).str());
     rgx_iterator++;
@@ -94,38 +95,31 @@ vector<string> M3U8Parser::ExtractTSUrls(const string &rgx_string) {
   return ts_urls;
 }
 
-vector<string> M3U8Parser::ExtractExtInfs(const string &rgx_string) {
+vector<string> M3U8Parser::ExtractExtInfs() const {
   std::vector<string> extinfs;
   boost::regex rgx("(?<=#EXTINF:)\\d+\\.\\d+");
   boost::smatch search_result;
   boost::regex_token_iterator<string::const_iterator> rend;
   boost::regex_token_iterator<string::const_iterator> rgx_iterator(
-                         rgx_string.begin(), rgx_string.end(), rgx);
-  while(rgx_iterator != rend){
+                       rgx_string_.begin(), rgx_string_.end(), rgx);
+  while(rgx_iterator != rend) {
     extinfs.push_back((*rgx_iterator).str());
     rgx_iterator++;
   }
   return extinfs;
 }
 
-int M3U8Parser::ExtractExtXVersion(const string &rgx_string) {
-  boost::regex rgx("(?<=#EXT-X-VERSION:)\\d+");
-  boost::smatch search_result;
-  boost::regex_search(rgx_string, search_result, rgx);
-  return stoi(search_result[0]);
-}
-
-int M3U8Parser::ExtractExtXTargetDuration(const string &rgx_string) {
+int M3U8Parser::ExtractExtXTargetDuration() const {
   boost::regex rgx("(?<=EXT-X-TARGETDURATION:)\\d+");
   boost::smatch search_result;
-  boost::regex_search(rgx_string, search_result, rgx);
+  boost::regex_search(rgx_string_, search_result, rgx);
   return stoi(search_result[0]);
 }
   
-int M3U8Parser::ExtractExtXMediaSequence(const string &rgx_string) {
+int M3U8Parser::ExtractExtXMediaSequence() const {
   boost::regex rgx("(?<=EXT-X-MEDIA-SEQUENCE:)\\d+");
   boost::smatch search_result;
-  boost::regex_search(rgx_string, search_result, rgx);
+  boost::regex_search(rgx_string_, search_result, rgx);
   return stoi(search_result[0]);
 }
 

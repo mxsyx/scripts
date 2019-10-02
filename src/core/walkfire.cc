@@ -11,28 +11,26 @@ using std::string;
 // 下载M3U8索引文件
 // 如果下载的文件不是最终包含TS文件链接的M3U8文件，
 // 而是指向了一个M3U8备份文件，则去下载这个备份文件
-// @param next_url 下一个将被下载文件的链接
+// @param next_url 下一个将被下载的文件的链接
 // @param cache_path_m3u8 M3U8文件的缓存目录
 string DownloadM3U8(string next_url, const string &cache_path_m3u8) {
   string filepath;  // 下载的M3U8文件存储路径
   string backup_url;  // M3U8备份文件的链接
-  do{
+  do {
     filepath = cache_path_m3u8 + wfire::utils::MakeFilename(".m3u8");
     wfire::downloader.DownloadM3U8(next_url, filepath);
-    if(wfire::m3u8parser.IsStreamInf(filepath)) {
-      backup_url = wfire::m3u8parser.ExtractBackupUrl(filepath);
+    wfire::m3u8parser.ChangeRgxString(filepath);
+    if(wfire::m3u8parser.IsStreamInf()) {
+      backup_url = wfire::m3u8parser.ExtractBackupUrl();
       next_url = wfire::utils::SpliceUrl(next_url, backup_url);
+      std::cout << next_url << std::endl;
     } else {
       next_url = "";
     }
-  }while(!next_url.empty());
+  } while(!next_url.empty());
   return filepath;
 }
 
-void DownloadTS(const string &m3u8_filepath) {
-  
-
-}
 
 int main(int argc, char *argv[]) {
   // 解析命令行参数
