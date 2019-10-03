@@ -45,5 +45,4 @@ double TS::download_duration() const {
   return download_duration_;
 }
 
-
-}
+}  // namespace wfire

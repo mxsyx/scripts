@@ -15,16 +15,20 @@ namespace wfire {
 // 一个流媒体片段即是一个.ts文件
 class TS {
 private:
-  string url_;  // 流媒体片段地址
+  string url_;  // 流媒体片段链接
   string filepath_;  // 流媒体片段存储路径
   double extinf_ = 0.0;  // 流媒体片段时长
   double download_duration_ = 0.0;
   bool isdownload_ = false;
 
 public:
+  // 构造函数接受两个参数
+  // @param url 流媒体片段的链接
+  // @param extinf 流媒体片段时长
   TS(string url, double extinf);
   ~TS();
 
+  // 设置流媒体片段的存储路径
   void set_filepath(string filepath);
 
   // 设置流媒体片段的下载历时

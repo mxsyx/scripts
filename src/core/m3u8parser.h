@@ -45,6 +45,7 @@ public:
   string ExtractBackupUrl() const;
 
   // 提取流媒体版本
+  // @return 流媒体版本号
   int ExtractExtXVersion() const;
 
   // 提取流媒体片段的链接

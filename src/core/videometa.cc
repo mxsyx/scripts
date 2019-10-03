@@ -8,8 +8,6 @@ using std::string;
 
 namespace wfire {
 
-
-// VideoMeta 类方法定义
 VideoMeta::VideoMeta() {}
 
 VideoMeta::~VideoMeta() {}
@@ -18,29 +16,16 @@ void VideoMeta::set_ext_x_version(int ext_x_version) {
   ext_x_version_ = ext_x_version;
 }
 
-void VideoMeta::set_ext_x_targetduration(double ext_x_targetduration) {
-  ext_x_targetduration_ = ext_x_targetduration;
-}
-
 void VideoMeta::set_ext_x_media_sequence(int ext_x_media_sequence) {
   ext_x_media_sequence_ = ext_x_media_sequence;
 }
 
-int VideoMeta::ext_x_version() {
-  return ext_x_version_;
-}
-
-double VideoMeta::ext_x_targetduration() {
-  return ext_x_targetduration_;
-}
-
-int VideoMeta::ext_x_media_sequence() {
-  return ext_x_media_sequence_;
+void VideoMeta::set_ext_x_targetduration(double ext_x_targetduration) {
+  ext_x_targetduration_ = ext_x_targetduration;
 }
 
 void VideoMeta::AppendStreamInf(string url) {
-  StreamInf streaminf(url);
-  ext_x_stream_infs_.push_back(streaminf);
+  ext_x_stream_infs_.push_back(url);
 }
 
 void VideoMeta::AppendTS(string url, double extinf) {
@@ -48,12 +33,24 @@ void VideoMeta::AppendTS(string url, double extinf) {
   tses_.push_back(ts);
 }
 
-TS& VideoMeta::Tses(int index) {
-  return tses_[index];
+int VideoMeta::ext_x_version() const {
+  return ext_x_version_;
 }
 
-int VideoMeta::TsNums() {
+double VideoMeta::ext_x_targetduration() const {
+  return ext_x_targetduration_;
+}
+
+int VideoMeta::ext_x_media_sequence() const {
+  return ext_x_media_sequence_;
+}
+
+int VideoMeta::GetTsNumber() const {
   return tses_.size();
+}
+
+TS& VideoMeta::Tses(int index) {
+  return tses_[index];
 }
 
 }  // namespace wfire

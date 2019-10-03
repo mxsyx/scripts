@@ -13,7 +13,7 @@ using std::string;
 
 namespace wfire {
 
-// 封装流媒体的相关信息
+// 封装流媒体的源信息
 class VideoMeta {
 private:
   int ext_x_version_ = 3;
@@ -42,20 +42,21 @@ public:
     void AppendTS(string url, double extinf);
 
     // 返回M3U8文件的版本
-    int ext_x_version();
-    
-    // 返回每个视频分段最大的时长
-    double ext_x_targetduration();
+    int ext_x_version() const;
     
     // 返回播放列表第一个流媒体片段的序列号
-    int ext_x_media_sequence();
-
-    // 返回某个流媒体片段的源信息对象
-    // @param index 流媒体片段列表的索引
-    TS& Tses(int index);
+    int ext_x_media_sequence() const;
+    
+    // 返回每个视频分段最大的时长
+    double ext_x_targetduration() const;
 
     // 返回流媒体片段列表的长度
-    int TsNums();
+    int GetTsNumber() const;
+
+    // 返回某个流媒体片段的源信息对象
+    // @param index 流媒体片段的索引
+    TS& Tses(int index);
+
 };
 
 }  // namespace wfire
