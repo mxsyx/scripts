@@ -1,0 +1,5 @@
+Example1
+    https://youku.com-ok-163.com/20190905/1200_a8048943/index.m3u8 ->
+    https://youku.com-ok-163.com/20190905/1200_a8048943/1000k/hls/index.m3u8 ->
+    https://youku.com-ok-163.com/20190905/1200_a8048943/1000k/hls/*.ts
+
