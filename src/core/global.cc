@@ -18,7 +18,7 @@ void Global::CheckDir(const string &dir) {
     mkdir(dir.c_str(), S_IRWXU);
 }
 
-Global::Global(int argc, char *argv) {
+Global::Global(int argc, char *argv[]) {
   std::map<string, string> parameters(ParseCmd(argc, argv));
   start_url_ = parameters["url"];
   filename_  = parameters["filename"];
@@ -28,12 +28,25 @@ Global::Global(int argc, char *argv) {
   cache_path_ts_ = cache_path_ + "ts/";
 }
 
-void Global::Init() {
-  // 检查工作目录是否存在
+Global::~Global() {}
+
+void Global::Initialization() {
   CheckDir(workspace_);
   CheckDir(cache_path_);
   CheckDir(cache_path_m3u8_);
   CheckDir(cache_path_ts_);
+}
+
+string Global::start_url() const {
+  return start_url_;
+}
+
+string Global::cache_path_m3u8() const {
+  return cache_path_m3u8_;
+}
+
+string Global::cache_path_ts() const {
+  return cache_path_ts_;
 }
 
 }  // namespace wfire

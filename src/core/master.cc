@@ -3,8 +3,6 @@
 // 主调度模块
 
 #include "master.h"
-#include "common.h"
-
 #include <vector>
 #include <chrono>
 #include <sstream>
@@ -54,24 +52,29 @@ void Master::AppendTS() {
     videometa_.AppendTS(ts_urls[i], extinfs[i]);
 }
 
-string Master::DownloadM3U8(string next_url, const string &cache_path_m3u8) {
+Master::Master(Global &global):global_(global) {}
+
+Master::~Master() {}
+
+string Master::DownloadM3U8() {
   string filepath;  // 下载的M3U8文件存储路径
+  string next_url = global_.start_url();
   while(!next_url.empty()) {
-    filepath = cache_path_m3u8 + MakeFilename(".m3u8");
+    filepath = global_.cache_path_m3u8() + MakeFilename(".m3u8");
     downloader_.DownloadM3U8(next_url, filepath);
     m3u8parser_.ChangeRgxString(filepath);
     next_url = (m3u8parser_.IsStreamInf() ? SpliceUrl(next_url,
-                                m3u8parser_.ExtractBackupUrl()) : "");
+                         m3u8parser_.ExtractBackupUrl()) : "");
   }
   return filepath;
 }
 
-void Master::DownloadTS(const string &cache_path_ts) {
-  const int ts_nums = videometa_.GetTsNumber();
+void Master::DownloadTS() {
   string filepath;
+  const int ts_nums = videometa_.GetTsNumber();
   for(int index = 0; index < ts_nums; index++) {
     TS& ts = videometa_.Tses(index);
-    filepath = cache_path_ts + MakeFilename(".ts");
+    filepath = global_.cache_path_ts() + MakeFilename(".ts");
     downloader_.DownloadTS("https://youku.com-ok-163.com/20190905/1200_a8048943/1000k/hls/" + ts.url(), filepath);
   }
 }
@@ -82,6 +85,12 @@ void Master::SetVideoMeta(const string &m3u8_filepath) {
   SetExtXMediaSequence();
   SetExtXTargetDuration();
   AppendTS();
+}
+
+void Master::Start() {
+  const string m3u8_filepath = DownloadM3U8();
+  SetVideoMeta(m3u8_filepath);
+  DownloadTS();
 }
 
 }  // namespce wfire

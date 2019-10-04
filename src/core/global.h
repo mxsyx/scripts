@@ -36,10 +36,21 @@ private:
   void CheckDir(const string &dir);
 
 public:
-  Global(int argc, char *argv);
+  Global(int argc, char *argv[]);
   ~Global();
 
-  void Init();
+  // 执行程序初始化
+  // 检查工作目录是否存在
+  void Initialization();
+
+  // 返回起始地址
+  string start_url() const;
+
+  // 返回M3U8文件缓存目录
+  string cache_path_m3u8() const;
+
+  // 返回TS文件缓存目录
+  string cache_path_ts() const;
 
 };
 
