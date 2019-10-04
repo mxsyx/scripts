@@ -52,21 +52,21 @@ void Master::AppendTS() {
     videometa_.AppendTS(ts_urls[i], extinfs[i]);
 }
 
-Master::Master(Global &global):global_(global) {}
-
-Master::~Master() {}
-
-string Master::DownloadM3U8() {
+void Master::DownloadM3U8() {
   string filepath;  // 下载的M3U8文件存储路径
-  string next_url = global_.start_url();
+  string next_url = global_.starturl();
   while(!next_url.empty()) {
     filepath = global_.cache_path_m3u8() + MakeFilename(".m3u8");
+    global_.set_m3u8_filepath(filepath);
     downloader_.DownloadM3U8(next_url, filepath);
     m3u8parser_.ChangeRgxString(filepath);
-    next_url = (m3u8parser_.IsStreamInf() ? SpliceUrl(next_url,
-                         m3u8parser_.ExtractBackupUrl()) : "");
+    if(m3u8parser_.IsStreamInf()) {
+      next_url = SpliceUrl(next_url, m3u8parser_.ExtractBackupUrl());
+      global_.set_starturl(next_url);
+    } else {
+      return ;
+    }
   }
-  return filepath;
 }
 
 void Master::DownloadTS() {
@@ -75,21 +75,25 @@ void Master::DownloadTS() {
   for(int index = 0; index < ts_nums; index++) {
     TS& ts = videometa_.Tses(index);
     filepath = global_.cache_path_ts() + MakeFilename(".ts");
-    downloader_.DownloadTS("https://youku.com-ok-163.com/20190905/1200_a8048943/1000k/hls/" + ts.url(), filepath);
+    downloader_.DownloadTS(SpliceUrl(global_.starturl(), ts.url()), filepath);
   }
 }
 
-void Master::SetVideoMeta(const string &m3u8_filepath) {
-  m3u8parser_.ChangeRgxString(m3u8_filepath);
+void Master::SetVideoMeta() {
+  m3u8parser_.ChangeRgxString(global_.m3u8_filepath());
   SetExtXVersion();
   SetExtXMediaSequence();
   SetExtXTargetDuration();
   AppendTS();
 }
 
+Master::Master(Global &global):global_(global) {}
+
+Master::~Master() {}
+
 void Master::Start() {
-  const string m3u8_filepath = DownloadM3U8();
-  SetVideoMeta(m3u8_filepath);
+  DownloadM3U8();
+  SetVideoMeta();
   DownloadTS();
 }
 

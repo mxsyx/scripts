@@ -8,4 +8,5 @@ int main(int argc, char *argv[]) {
   wfire::Global global(argc, argv);
   global.Initialization();
   wfire::Master master(global);
+  master.Start();
 }

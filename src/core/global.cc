@@ -20,7 +20,7 @@ void Global::CheckDir(const string &dir) {
 
 Global::Global(int argc, char *argv[]) {
   std::map<string, string> parameters(ParseCmd(argc, argv));
-  start_url_ = parameters["url"];
+  starturl_ = parameters["url"];
   filename_  = parameters["filename"];
   workspace_ = parameters["workspace"] + "/";
   cache_path_ = workspace_ + "cache/";
@@ -37,8 +37,16 @@ void Global::Initialization() {
   CheckDir(cache_path_ts_);
 }
 
-string Global::start_url() const {
-  return start_url_;
+void Global::set_starturl(string starturl) {
+  starturl_ = starturl;
+}
+
+void Global::set_m3u8_filepath(string m3u8_filepath) {
+  m3u8_filepath_ = m3u8_filepath;
+}
+
+string Global::starturl() const {
+  return starturl_;
 }
 
 string Global::cache_path_m3u8() const {
@@ -47,6 +55,10 @@ string Global::cache_path_m3u8() const {
 
 string Global::cache_path_ts() const {
   return cache_path_ts_;
+}
+
+string Global::m3u8_filepath() const {
+  return m3u8_filepath_;
 }
 
 }  // namespace wfire

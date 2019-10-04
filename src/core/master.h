@@ -52,14 +52,14 @@ private:
   // 下载 M3U8 文件
   // 如果下载的文件不是最终包含TS文件链接的M3U8文件，
   // 而是指向了一个M3U8备份文件，则去下载这个备份文件
-  string DownloadM3U8();
+  void DownloadM3U8();
 
   // 下载 TS 文件
   void DownloadTS();
 
   // 设置视频源信息
   // @param m3u8_filepath M3U8文件的存储路径
-  void SetVideoMeta(const string &m3u8_filepath);
+  void SetVideoMeta();
 
 public:
   Master(Global& global);

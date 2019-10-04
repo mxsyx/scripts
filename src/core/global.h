@@ -14,7 +14,7 @@ namespace wfire {
 class Global {
 private:
   // 起始地址
-  string start_url_;
+  string starturl_;
 
   // 输出的文件名
   string filename_;
@@ -31,6 +31,9 @@ private:
   // TS文件缓存目录
   string cache_path_ts_;
 
+  // M3U8文件的存储路径
+  string m3u8_filepath_;
+
   // 判断目录是否存在
   // 若不存在则新建目录
   void CheckDir(const string &dir);
@@ -43,14 +46,22 @@ public:
   // 检查工作目录是否存在
   void Initialization();
 
+  // 设置起始地址
+  void set_starturl(string starturl);
+
+  // 设置M3U8文件存储路径
+  void set_m3u8_filepath(string m3u8_filepath);
+
   // 返回起始地址
-  string start_url() const;
+  string starturl() const;
 
   // 返回M3U8文件缓存目录
   string cache_path_m3u8() const;
 
   // 返回TS文件缓存目录
   string cache_path_ts() const;
+
+  string m3u8_filepath() const;
 
 };
 
