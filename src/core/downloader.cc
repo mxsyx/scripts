@@ -5,7 +5,6 @@
 #include <curl/curl.h>
 #include <iostream>
 #include <thread>
-#include "videometa.h"
 
 using std::string;
 
@@ -53,13 +52,14 @@ void Downloader::DownloadTS(const string &url, const string &filepath) {
 
 void Downloader::Download(VideoMeta& videometa) {
   curl_global_init(CURL_GLOBAL_ALL);
-  std::vector<std::thread> threads;
-  const int tasks = videometa.GetTsNumber();
-  for(int i = 0; i < tasks; i++) {
-    std::thread t0(DownloadTS, videometa.Tses(i).url());
+  std::vector<std::thread> tasks;
+  const int task_number = videometa.GetTsNumber();
+  for(int i = 0; i < task_number; i++) {
+    std::thread task(&Downloader::DownloadTS, videometa.Tses(i).url(), "csac");
+    tasks.push_back(task);
   }
-  for(int i = 0; i < tasks; i++)
-    threads[i].join()
+  for(int i = 0; i < task_number; i++)
+    tasks[i].join();
   curl_global_cleanup();
 }
 

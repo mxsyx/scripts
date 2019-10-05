@@ -6,6 +6,7 @@
 #define WALKFIRE_CORE_DOWNLOADER_H_
 
 #include <string>
+#include "videometa.h"
 
 using std::string;
 
@@ -28,6 +29,9 @@ public:
   // @param url M3U8索引文件的链接
   // @param filepath M3U8索引文件的存储路径
   string DownloadM3U8(const string &url, const string &filepath);
+
+
+  void Download(VideoMeta &videometa);
 
 };
 
