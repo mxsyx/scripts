@@ -2,18 +2,19 @@
 // 该软件源代码受 GNU GENERAL PUBLIC LICENSE 控制
 // 主调度模块
 
-#ifndef WALKFIRE_CORE_MASTER_H_
-#define WALKFIRE_CORE_MASTER_H_
+#ifndef WALKFIRE_CORE_WALKFIRE_H_
+#define WALKFIRE_CORE_WALKFIRE_H_
 
+#include <vector>
 #include "global.h"
 #include "videometa.h"
 #include "m3u8parser.h"
 #include "downloader.h"
 
-namespace wfire {
+namespace wfspace {
 
 // 主调度类
-class Master {
+class WalkFire {
 private:
   // 全局状态对象
   Global &global_;
@@ -29,8 +30,12 @@ private:
   
   // 根据时间戳字符串生成文件名
   // @param suffix 文件名后缀
-  string MakeFilename(string suffix);
+  string MakeFilename(const string &suffix);
+  
+  std::vector<string> MakeFilepath(const string &path, string suffix, int number);
 
+  void MakeAbsoluteUrl(std::vector<string> &ts_urls);
+  
   // 将两个URL拼接为一个URL
   string SpliceUrl(string url1, string url2);
 
@@ -62,14 +67,14 @@ private:
   void SetVideoMeta();
 
 public:
-  Master(Global& global);
-  ~Master();
+  WalkFire(Global& global);
+  ~WalkFire();
 
   // 主调度器入口函数
   void Start();
   
 };
 
-}  // namespace wfire
+}  // namespace wfspace
 
 #endif

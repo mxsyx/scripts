@@ -9,7 +9,7 @@
 
 using std::string;
 
-namespace wfire {
+namespace wfspace {
 
 void Global::CheckDir(const string &dir) {
   DIR *directory = NULL;
@@ -21,16 +21,17 @@ void Global::CheckDir(const string &dir) {
 Global::Global(int argc, char *argv[]) {
   std::map<string, string> parameters(ParseCmd(argc, argv));
   starturl_ = parameters["url"];
-  filename_  = parameters["filename"];
+  filename_ = parameters["filename"];
   workspace_ = parameters["workspace"] + "/";
   cache_path_ = workspace_ + "cache/";
   cache_path_m3u8_ = cache_path_ + "m3u8/";
   cache_path_ts_ = cache_path_ + "ts/";
+  threads_ = stoi(parameters["threads"]);
 }
 
 Global::~Global() {}
 
-void Global::Initialization() {
+void Global::Init() {
   CheckDir(workspace_);
   CheckDir(cache_path_);
   CheckDir(cache_path_m3u8_);
@@ -61,4 +62,8 @@ string Global::m3u8_filepath() const {
   return m3u8_filepath_;
 }
 
-}  // namespace wfire
+int Global::threads() const {
+  return threads_;
+}
+
+}  // namespace wfspace

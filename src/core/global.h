@@ -9,7 +9,7 @@
 
 using std::string;
 
-namespace wfire {
+namespace wfspace {
 
 class Global {
 private:
@@ -33,6 +33,9 @@ private:
 
   // M3U8文件的存储路径
   string m3u8_filepath_;
+  
+  // 线程数量
+  int threads_;
 
   // 判断目录是否存在
   // 若不存在则新建目录
@@ -44,7 +47,7 @@ public:
 
   // 执行程序初始化
   // 检查工作目录是否存在
-  void Initialization();
+  void Init();
 
   // 设置起始地址
   void set_starturl(string starturl);
@@ -61,10 +64,13 @@ public:
   // 返回TS文件缓存目录
   string cache_path_ts() const;
 
+  // 返回M3U8文件存储路径
   string m3u8_filepath() const;
-
+  
+  // 返回线程数
+  int threads() const;
 };
 
-}  // namespace wfire 
+}  // namespace wfspace 
 
 #endif  // WALKFIRE_CORE_GLOBAL_H_

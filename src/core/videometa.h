@@ -11,7 +11,7 @@
 
 using std::string;
 
-namespace wfire {
+namespace wfspace {
 
 // 封装流媒体的源信息
 class VideoMeta {
@@ -39,7 +39,7 @@ public:
   void AppendStreamInf(string url);
     
   // 向流媒体片段列表追加一个片段
-  void AppendTS(string url, double extinf);
+  void AppendTS(string url, double extinf, string filepath);
 
   // 返回M3U8文件的版本
   int ext_x_version() const;
@@ -53,12 +53,11 @@ public:
   // 返回流媒体片段列表的长度
   int GetTsNumber() const;
 
-  // 返回某个流媒体片段的源信息对象
+  // 返回某个流媒体片段信息对象的引用
   // @param index 流媒体片段的索引
   TS& Tses(int index);
-
 };
 
-}  // namespace wfire
+}  // namespace wfspace
 
 #endif  // WALKFIRE_CORE_VIDEOMETA_H_

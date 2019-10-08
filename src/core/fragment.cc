@@ -4,21 +4,18 @@
 
 #include "fragment.h"
 
-namespace wfire {
+namespace wfspace {
 
-TS::TS(string url, double extinf) {
+TS::TS(string url, double extinf, string filepath) {
   url_ = url;
   extinf_ = extinf;
+  filepath_ = filepath;
 }
 
 TS::~TS() {}
 
 void TS::set_filepath(string filepath) {
   filepath_ = filepath;
-}
-
-void TS::set_download_duration(double download_duration) {
-  download_duration_ = download_duration;
 }
 
 void TS::set_isdownload(bool isdownload) {
@@ -41,8 +38,4 @@ bool TS::isdownload() const {
   return isdownload_;
 }
 
-double TS::download_duration() const {
-  return download_duration_;
-}
-
-}  // namespace wfire
+}  // namespace wfspace

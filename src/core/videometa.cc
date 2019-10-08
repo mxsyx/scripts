@@ -6,7 +6,7 @@
 
 using std::string;
 
-namespace wfire {
+namespace wfspace {
 
 VideoMeta::VideoMeta() {}
 
@@ -28,8 +28,8 @@ void VideoMeta::AppendStreamInf(string url) {
   ext_x_stream_infs_.push_back(url);
 }
 
-void VideoMeta::AppendTS(string url, double extinf) {
-  TS ts(url, extinf);
+void VideoMeta::AppendTS(string url, double extinf, string filepath) {
+  TS ts(url, extinf, filepath);
   tses_.push_back(ts);
 }
 
@@ -53,4 +53,4 @@ TS& VideoMeta::Tses(int index) {
   return tses_[index];
 }
 
-}  // namespace wfire
+}  // namespace wfspace

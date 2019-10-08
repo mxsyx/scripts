@@ -11,7 +11,7 @@
 using std::string;
 using std::vector;
 
-namespace wfire {
+namespace wfspace {
 
 class M3U8Parser {
 
@@ -40,8 +40,8 @@ public:
   // @return 文件是M3U8备份源文件返回true,否则返回flase
   bool IsStreamInf() const;
 
-  // 从M3U8备份源文件中提取备份源地址
-  // @return 提取到的M3U8备份原地址
+  // 提取备份源地址
+  // @return M3U8备份原地址
   string ExtractBackupUrl() const;
 
   // 提取流媒体版本
@@ -61,9 +61,8 @@ public:
   
   // 提取第一个流媒体片段的序列号
   int ExtractExtXMediaSequence() const;
-
 };
 
-}  // namespace wfire
+}  // namespace wfspace
 
 #endif  // WALKFIRE_CORE_URLPARSER_H_

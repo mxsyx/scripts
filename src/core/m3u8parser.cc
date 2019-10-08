@@ -19,7 +19,7 @@
 using std::string;
 using std::vector;
 
-namespace wfire {
+namespace wfspace {
 
 M3U8Parser::M3U8Parser() {}
 
@@ -132,4 +132,4 @@ int M3U8Parser::ExtractExtXTargetDuration() const {
   return stoi(search_result[0].str());
 }
 
-} // namespace wfire
+} // namespace wfspace

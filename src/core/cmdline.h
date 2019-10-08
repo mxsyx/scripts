@@ -810,11 +810,11 @@ private:
 } // cmdline
 
 
-namespace wfire {
+namespace wfspace {
 
 // 解析命令行参数
 std::map<std::string, std::string> ParseCmd(int argc, char *argv[]);
 
-}  // namespace wfire
+}  // namespace wfspace
 
 #endif  // WALKFIRE_CORE_CMDLINE_H_

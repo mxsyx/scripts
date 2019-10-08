@@ -9,7 +9,7 @@
 
 using std::string;
 
-namespace wfire {
+namespace wfspace {
 
 // 封装流媒体片段的源信息
 // 一个流媒体片段即是一个.ts文件
@@ -18,21 +18,17 @@ private:
   string url_;  // 流媒体片段链接
   string filepath_;  // 流媒体片段存储路径
   double extinf_ = 0.0;  // 流媒体片段时长
-  double download_duration_ = 0.0;
   bool isdownload_ = false;
 
 public:
   // 构造函数接受两个参数
   // @param url 流媒体片段的链接
   // @param extinf 流媒体片段时长
-  TS(string url, double extinf);
+  TS(string url, double extinf, string filepath);
   ~TS();
 
   // 设置流媒体片段的存储路径
   void set_filepath(string filepath);
-
-  // 设置流媒体片段的下载历时
-  void set_download_duration(double download_duration);
 
   // 设置流媒体片段是否下载完成
   void set_isdownload(bool isdownload);
@@ -46,14 +42,10 @@ public:
   // 返回流媒体片段的时长
   double extinf() const;
 
-  // 返回流媒体片段的下载历时
-  double download_duration() const;
-
   // 返回流媒体片段是否下载完成
   bool isdownload() const;
-
 };
 
-}  // namespace wfire
+}  // namespace wfspace
 
 #endif  // WALKFIRE_CORE_FRAGMENT_H_
