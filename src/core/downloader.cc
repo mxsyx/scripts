@@ -39,7 +39,7 @@ string Downloader::DownloadM3U8(const string &url, const string &filepath) {
   return filepath;
 }
 
-void Download(int start, int end, VideoMeta videometa) {  
+void Downloader::Download(int start, int end, VideoMeta &videometa) {  
   std::cout << "线程开始：(" << start << " " << end << + ")" << std::endl;
 
   CURL *curl = curl_easy_init();
@@ -68,8 +68,8 @@ void Downloader::DownloadTS(int threads, VideoMeta &videometa) {
     start = i * each_nums;
     end = (i + 1) * each_nums;
     end = end > ts_nums ? ts_nums : end;
-    std::thread thread(Download, start, end, videometa);
-    //tasks.push_back(std::thread();
+    std::thread thread(&Downloader::Download, this, start, end, std::ref(videometa));
+    tasks.push_back(std::move(thread));
   }
   for(int i = 0; i < threads; i++)
     tasks[i].join();

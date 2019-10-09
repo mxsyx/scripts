@@ -11,8 +11,6 @@
 using std::string;
 
 namespace wfspace{
-void Download(int start, int end, VideoMeta videometa);
-
 class Downloader {
 private:
   // 文件内容写入
@@ -20,7 +18,9 @@ public:
   Downloader();
   ~Downloader();
   static int WriteData(void *ptr, size_t size, size_t nmemb, void *fp);
-  
+
+  void Download(int start, int end, VideoMeta &videometa);
+
   // 下载流媒体文件
   // @param url TS文件的链接
   // @param filepath TS文件的存储路径
