@@ -32,8 +32,14 @@ private:
   // @param suffix 文件名后缀
   string MakeFilename(const string &suffix);
   
+  // 批量生成流媒体片段的存储路径
+  // @param path   流媒体片段缓存目录
+  // @param suffix 流媒体片段文件后缀
+  // @param number 流媒体片段总的个数
   std::vector<string> MakeFilepath(const string &path, string suffix, int number);
 
+  // 生成流媒体片段的绝对地址
+  // @param ts_urls 流媒体片段的相对地址
   void MakeAbsoluteUrl(std::vector<string> &ts_urls);
   
   // 将两个URL拼接为一个URL
@@ -60,6 +66,7 @@ private:
   void DownloadM3U8();
 
   // 下载 TS 文件
+  // 调用下载器的中的多线程下载函数
   void DownloadTS();
 
   // 设置视频源信息

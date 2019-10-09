@@ -68,7 +68,7 @@ void WalkFire::AppendTS() {
 
   // 生成TS文件的存储路径
   vector<string> filepaths = MakeFilepath(global_.cache_path_ts(), 
-                                                  ".ts", ts_nums);
+                                          ".ts", ts_nums);
   // 生成TS文件的绝对地址
   MakeAbsoluteUrl(ts_urls);
 
@@ -95,9 +95,7 @@ void WalkFire::DownloadM3U8() {
 }
 
 void WalkFire::DownloadTS() {
-  const int ts_nums = videometa_.GetTsNumber();
-  for(int index = 0; index < ts_nums; index++) 
-    downloader_.DownloadTS(global_.threads(), videometa_);
+  downloader_.DownloadTS(global_.threads(), videometa_);
 }
 
 void WalkFire::SetVideoMeta() {

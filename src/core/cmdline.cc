@@ -11,17 +11,17 @@ std::map<std::string, std::string> ParseCmd(int argc, char *argv[]) {
   cmdline::parser parser;
   std::map<std::string, std::string> parameters;
   
-  parser.add<std::string>("url", 'u', "指定下载地址", true);
+  parser.add<std::string>("url",       'u', "指定下载地址", true);
   parser.add<std::string>("filename",  'f', "指定输出的文件名", true);
+  parser.add<std::string>("threads",   't', "指定线程数量", false, "12");
   parser.add<std::string>("workspace", 'w', "指定工作目录", false, "wfspace");
-  parser.add<std::string>("threads", 't', "指定线程数量", false, "4");
   
   parser.parse_check(argc, argv);
 
   parameters["url"] = parser.get<std::string>("url");
   parameters["filename"] = parser.get<std::string>("filename");
-  parameters["workspace"] = parser.get<std::string>("workspace");
   parameters["threads"] = parser.get<std::string>("threads");
+  parameters["workspace"] = parser.get<std::string>("workspace");
 
   return parameters;
 }
