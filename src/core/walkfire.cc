@@ -6,6 +6,8 @@
 #include <vector>
 #include <chrono>
 #include <sstream>
+#include <iostream>
+#include "combine.h"
 
 using std::string;
 using std::vector;
@@ -107,6 +109,17 @@ void WalkFire::SetVideoMeta() {
   AppendTS();
 }
 
+void WalkFire::CombineVideo() {
+  vector<string> ts_paths;
+  int ts_nums = videometa_.GetTsNumber();
+  for(int i = 0; i < ts_nums; i++) {
+    TS &ts = videometa_.Tses(i);
+    ts_paths.push_back(ts.filepath());
+  }
+  Combine combine(global_.filename(), ts_paths);
+  combine.CombineVideo();
+}
+
 WalkFire::WalkFire(Global &global):global_(global) {}
 
 WalkFire::~WalkFire() {}
@@ -115,6 +128,7 @@ void WalkFire::Start() {
   DownloadM3U8();
   SetVideoMeta();
   DownloadTS();
+  CombineVideo();
 }
 
 }  // namespce wfspace

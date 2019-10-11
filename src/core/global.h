@@ -58,6 +58,9 @@ public:
   // 返回起始地址
   string starturl() const;
 
+  // 
+  string filename() const;
+
   // 返回M3U8文件缓存目录
   string cache_path_m3u8() const;
 

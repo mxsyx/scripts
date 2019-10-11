@@ -10,6 +10,7 @@
 #include "videometa.h"
 #include "m3u8parser.h"
 #include "downloader.h"
+#include "combine.h"
 
 namespace wfspace {
 
@@ -72,6 +73,9 @@ private:
   // 设置视频源信息
   // @param m3u8_filepath M3U8文件的存储路径
   void SetVideoMeta();
+
+  // 
+  void CombineVideo();
 
 public:
   WalkFire(Global& global);

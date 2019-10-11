@@ -3,6 +3,7 @@
 // 全局状态文件
 
 #include "global.h"
+#include <unistd.h>
 #include <dirent.h>
 #include <sys/stat.h>
 #include "cmdline.h"
@@ -21,8 +22,11 @@ void Global::CheckDir(const string &dir) {
 Global::Global(int argc, char *argv[]) {
   std::map<string, string> parameters(ParseCmd(argc, argv));
   starturl_ = parameters["url"];
-  filename_ = parameters["filename"];
-  workspace_ = parameters["workspace"] + "/";
+  char buf[180];
+  getcwd(buf, sizeof(buf));
+  string cwd(buf, strlen(buf));
+  workspace_ = cwd + "/" + parameters["workspace"] + "/";
+  filename_ = workspace_ + parameters["filename"];
   cache_path_ = workspace_ + "cache/";
   cache_path_m3u8_ = cache_path_ + "m3u8/";
   cache_path_ts_ = cache_path_ + "ts/";
@@ -48,6 +52,10 @@ void Global::set_m3u8_filepath(string m3u8_filepath) {
 
 string Global::starturl() const {
   return starturl_;
+}
+
+string Global::filename() const {
+  return filename_;
 }
 
 string Global::cache_path_m3u8() const {
