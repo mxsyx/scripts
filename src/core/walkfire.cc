@@ -41,8 +41,8 @@ string WalkFire::SpliceUrl(string url1, string url2) {
 }
 
 void WalkFire::MakeAbsoluteUrl(vector<string> &ts_urls) {
-  const int ts_nums = ts_urls.size();
-  const string &starturl = global_.starturl();
+  int ts_nums = ts_urls.size();
+  const string starturl = global_.starturl();
   for(int i = 0; i < ts_nums; i++)
     ts_urls[i] = SpliceUrl(starturl, ts_urls[i]);
 }
@@ -88,6 +88,7 @@ void WalkFire::DownloadM3U8() {
     downloader_.DownloadM3U8(next_url, filepath);
     m3u8parser_.ChangeRgxString(filepath);
     if(m3u8parser_.IsStreamInf()) {
+      std::cout << "是的";
       next_url = SpliceUrl(next_url, m3u8parser_.ExtractBackupUrl());
       global_.set_starturl(next_url);
     } else {
@@ -117,7 +118,7 @@ void WalkFire::CombineVideo() {
     ts_paths.push_back(ts.filepath());
   }
   Combine combine(global_.filename(), ts_paths);
-  combine.CombineVideo();
+  combine.CombineVideo("mp4");
 }
 
 WalkFire::WalkFire(Global &global):global_(global) {}

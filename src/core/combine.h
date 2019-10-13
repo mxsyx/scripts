@@ -7,7 +7,6 @@
 
 #include <string>
 #include <vector>
-#include "videometa.h"
 
 using std::string;
 
@@ -15,18 +14,23 @@ namespace wfspace {
 
 class Combine {
 private:
-  // 输出的视频文件路径
-  string filepath_;
-  // 流媒体片段文件的存储路径列表
-  std::vector<string> ts_paths_;
+  // 输出视频文件的路径
+  const string filepath_;
 
+  // FFMPEG 合并视频命令
+  const string tslist_file_path_;
+
+  // 流媒体片段文件的存储路径列表
+  const std::vector<string> ts_paths_;
+  
+  // 生成.tslist文件
+  void MakeTsListFile() const;
+  
 public:
   Combine(string filepath, std::vector<string> ts_paths);
   ~Combine();
 
-  void MakeCombineFile(const string &combine_filepath) const;
-
-  void CombineVideo() const;
+  void CombineVideo(string oformat) const;
 
 };
 
