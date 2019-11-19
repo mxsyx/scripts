@@ -1,12 +1,12 @@
-import { Requests } from './requests.mjs'
 import fs from 'fs'
 import exec from 'child_process'
+import { Requests } from './requests.mjs'
 
 
 class WalkFire {
   constructor() {
     this.requests = new Requests();
-    this.url = 'https://youku.com-iqiyi.net/20191115/22617_70779cd4/1000k/hls/index.m3u8';
+    this.url = "https://cdn2.00hzyzbf.com/ppvod/69F13640710BC1CA6CE6E7112AF9DFB0.m3u8";
     this.baseUrl = this.url.replace('index.m3u8','');
     this.rgxStr = {
       'ts': '.*\.ts',
@@ -15,28 +15,28 @@ class WalkFire {
   }
 
   getCmdParams() {
-    cmdParams = NodeJS + Aria2c + FFmpeg
     process.argv.indexOf('--url')
     console.log(process.argv)
   }
 
   start() {
+    console.log(this.url)
     this.requests.get(this.url).then((content) => {
       const infUrl = this.isStreamInf(content, this.rgxStr['m3u8']);
       if (infUrl) {
-        this.url = `${this.baseUrl}${infUrl}`;
+        this.url = "";
         this.baseUrl = this.url.replace('index.m3u8','');
         this.start();
       } else {
         const tsUrls = this.getTsUrls(content, this.rgxStr['ts']);
         fs.writeFile('output.txt', tsUrls.join('\n'), (err) => {});
-
+    //    this.download('output.txt')
       }
     });
   }
 
   download(fileName) {
-    exec.exec(`aria2c -x 5 -i output.txt`, (err, stdout, stderr) => {
+    exec.exec(`aria2c -x 5 -i ${fileName}`, (err, stdout, stderr) => {
       if(err) {
         console.error(err);
         return ;
@@ -72,6 +72,4 @@ class WalkFire {
 
 
 const wf = new WalkFire();
-
-
 wf.start();
