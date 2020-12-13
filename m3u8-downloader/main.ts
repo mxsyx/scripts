@@ -1,5 +1,15 @@
-#! /usr/bin/env node
-// H.264 Downloader
+/*
+ * File: /main.ts
+ * Author: Mxsyx (mxsyxin@gmail.com)
+ * Created At: 2020-12-06 04:38:35
+ * ------
+ * Last Modified: 2020-12-13 11:08:16
+ * Modified By: Mxsyx (mxsyxin@gmail.com>)
+ * ------
+ * Lisense: MIT
+ * H.264 Downloader
+ * Exec: deno --allow-net --allow-write main.ts [urr]
+ */
 
 const THREADES_NUMBER = 10
 const OUTPUT_DIR = Date.now()

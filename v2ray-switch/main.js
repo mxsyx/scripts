@@ -1,8 +1,8 @@
-#! /usr/bin/env node
+#!/usr/bin/env node
 // v2ray-switch
 
-const net = require('net');
-const https = require("https")
+const net = require('net')
+const https = require('https')
 const fs = require('fs')
 const { spawnSync } = require('child_process')
 
@@ -24,12 +24,12 @@ function tcpPing(host, port) {
   return new Promise((resolve, reject) => {
     socket.on('connect', () => {
       resolve(Date.now() - justNow)
-      socket.destroy();
+      socket.destroy()
     }).on('error', e => {
       reject(e.message)
     }).on('timeout', () => {
       reject('timeout')
-    }).connect(port, host);
+    }).connect(port, host)
   })
 }
 
@@ -51,17 +51,19 @@ function main(data) {
         process.kill(process.pid, 'SIGTERM')
       }
     } catch (error) {
-      console.log(`${vmess['add']}:${vmess['port']}  ${error}`);
+      console.log(`${vmess['add']}:${vmess['port']}  ${error}`)
     }
   })
 }
 
 // start
-https.get(SUBSCRIPTION_URL, (res) => {
-  let data = ''
-  res.on('data', chunk => data += chunk)
-  res.on("end", () => main(data))
-  res.resume();
-}).on('error', e => {
-  console.log(`Got error: ${e.message}`)
-})
+https
+  .get(SUBSCRIPTION_URL, res => {
+    let data = ''
+    res.on('data', chunk => data += chunk)
+    res.on('end', () => main(data))
+    res.resume()
+  })
+  .on('error', e => {
+    console.log(`Got error: ${e.message}`)
+  })
